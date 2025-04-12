@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>YT Checker</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #00151a;
+        color: white;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        max-width: 1400px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: rgba(1,46,46,.45);
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    }
+    input[type="text"] {
+        background-color: rgba(1,46,46,.65);
+        color: white;
+        width: 80%;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+    .submitt {
+        padding: 10px 15px;
+        background-color: rgb(0, 58, 78);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    .stats, .videos {
+        margin-top: 20px;
+        text-align: left;
+    }
+    .video-item {
+        padding: 10px;
+        border-bottom: 1px solid #444;
+    }
+    .box {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(163px, auto));
+        gap: 0px;
+        align-items: center;
+    }
+    .image-container img {
+        max-width: 100%;
+        border-radius: 8px;
+        margin-left: 10%;
+    }
+    .mainStats p {
+        background-color: rgba(1,46,46,.65);
+        border:solid;
+        border-color: #00000000;
+        border-radius: 20px;
+        max-width: 30%;
+        text-align: center;
+        margin: 20px;
+        margin-top: 10px;
+        padding: 20px;
+        padding-top: 30px;
+        padding-bottom: 20px;
+        margin-left: 0%;
+        text-wrap-mode: nowrap;
+        min-width: 160px;
+    }
+    .mainStats span{
+        font-size: 24px;
+        text-align: center;
+        text-wrap-mode: wrap;
+        margin-bottom: 10px;
+        line-height: 45px;
+    }
+    .description, .video-container {
+        background-color: rgba(1,46,46,.65); /* */
+        border-radius: 20px;
+        padding: 20px;
+        text-align: center;
+    }
+    .mostpopularvideo {
+        background-image: 
+        linear-gradient(
+            rgba(0, 0, 0, 0),
+            rgb(0, 0, 0)
+        ),
+        url('https://placehold.co/320x180');
+        background-size: cover;
+        background-position: center;
+        width: 320px;
+        height: 180px;
+        background-position: center center;
+        display: flex;
+        margin: auto;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+    <h1>YouTube Stats Tracker</h1>
+    <form action="/submit" method="post">
+        <input type="text" id="channelInput" placeholder="Enter Channel ID..." name="username">
+        <input type="submit" placeholder="search" class="submitt">
+    </form>
+    <div class="stats" id="statsSection">
+        <h2 style="text-align: center;">Showing stats for channel ?</h2>
+        <h5 style="text-align: center; margin-top: -1%; color: #6e6e6e;">
+            <i>Custom URL: <span id="channelURL"></span></i>
+        </h5>
+        <div class="box mainStats" style="margin-right: -5%;">
+            <p><strong>Created On</strong> <br> <span id="channelCreation"> ? </span></p>
+            <p><strong>Subscribers</strong> <br> <span id="subscribers">?</span></p>
+            <p><strong>Views/video</strong> <br> <span id="videos"> ? </span></p>
+            <p><strong>Views</strong> <br> <span id="views"> ? </span></p>
+            <p style="margin-right: -10%;"><strong>Videos</strong> <br> <span id="videos"> ? </span></p>
+        </div>
+        
+        <div class="box" style="grid-template-columns: 1fr 1fr 1fr;">
+            <div class="image-container">
+                <img src="?" alt="Placeholder Image" id="channelImage">
+            </div>
+            <p style="text-align: center; margin-left: -20%; margin-right: 10%;" class="description"><strong>Description:</strong> <br><span id="channelDescription"> ?</span></p>
+            <div class="video-container">
+                <h2 style="margin-top: 10px;">Most popular video</h2>
+                <div class="mostpopularvideo"></div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="videos" id="videosSection">
+        <h2>Latest Videos</h2>
+        <div id="videoList"></div>
+    </div>
+    
+    <div class="history" id="historySection">
+        <h2>History</h2>
+        <div id="history">
+        </div>
+        <br>
+    </div>
+</div>
+
+</body>
+</html>
