@@ -84,31 +84,19 @@ def main():
 
             print("Searched")
 
-    print(f"Channel ID: {CHANNEL_ID}")
-    response = getResponse(f"https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id={CHANNEL_ID}&key={API_KEY}")
-    print(f"Channel ID: {CHANNEL_ID}")
+    response = getResponse(f"https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics,contentDetails&id={CHANNEL_ID}&key={API_KEY}")
     if response.status_code == 200:
         channel_details = response.json()
 
-        response = getResponse(f"https://www.googleapis.com/youtube/v3/channels?part=statistics&id={CHANNEL_ID}&key={API_KEY}")
-        print(f"Channel ID: {CHANNEL_ID}")
-        channel_statistics = response.json()
-
-        response = getResponse(f"https://www.googleapis.com/youtube/v3/channels?part=snippet&id={CHANNEL_ID}&key={API_KEY}")
-        print(f"Channel ID: {CHANNEL_ID}")
-        channel_info = response.json()
-
-        # defines a bunch of stuff
-
-        print(f"Channel ID: {CHANNEL_ID}")
-        view_count = channel_statistics["items"][0]["statistics"]["viewCount"]
-        subscriber_count = channel_statistics["items"][0]["statistics"]["subscriberCount"]
-        video_count = channel_statistics["items"][0]["statistics"]["videoCount"]
+        # defines some statistics that got pulled from the API responses
+        view_count = channel_details["items"][0]["statistics"]["viewCount"]
+        subscriber_count = channel_details["items"][0]["statistics"]["subscriberCount"]
+        video_count = channel_details["items"][0]["statistics"]["videoCount"]
         video_playlist = channel_details["items"][0]["contentDetails"]["relatedPlaylists"]["uploads"] # searches for the "all videos" playlist
-        channel_description = channel_info["items"][0]["snippet"]["description"]
-        channel_custom_URL = channel_info["items"][0]["snippet"]["customUrl"]
-        channel_creation_date = channel_info["items"][0]["snippet"]["publishedAt"][:10]
-        channel_profile_picture = channel_info["items"][0]["snippet"]["thumbnails"]["medium"]["url"]
+        channel_description = channel_details["items"][0]["snippet"]["description"]
+        channel_custom_URL = channel_details["items"][0]["snippet"]["customUrl"]
+        channel_creation_date = channel_details["items"][0]["snippet"]["publishedAt"][:10]
+        channel_profile_picture = channel_details["items"][0]["snippet"]["thumbnails"]["medium"]["url"]
         
 
         response = getResponse(f"https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId={video_playlist}&maxResults=3&key={API_KEY}") #searches for the videos
@@ -183,7 +171,7 @@ def main():
         except Exception:
             pass
         
-        if add_todays_date_to_the_charts:
+        if add_todays_date_to_the_charts: # in the case of there not being any data on the requested channel, put todays data into the charts
             history += f"Date: {today} | Subscribers: {subscriber_count} | Views: {view_count} | Videos: {video_count}"
             history_date.append(today)
             history_subscribers.append(subscriber_count)
