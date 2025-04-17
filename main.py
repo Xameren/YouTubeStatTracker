@@ -174,14 +174,16 @@ def main():
             history_videos.append(stat['videos'])
             if counter == 30:
                 break
+        add_todays_date_to_the_charts = True
+        
+        # this block of code prevents duplicate data points for today's data to be shown in the front end
         try:
-            if user_tracker[CHANNEL_ID]["stats"][-1]["date"] != today:
-                history += f"Date: {today} | Subscribers: {subscriber_count} | Views: {view_count} | Videos: {video_count}"
-                history_date.append(today)
-                history_subscribers.append(subscriber_count)
-                history_views.append(view_count)
-                history_videos.append(video_count)
-        except Exception: #I forgot why this is here. It runs them both nonetheless? these look the exact same, but if it aint broke dont fix it I guess
+            if user_tracker[CHANNEL_ID]["stats"][-1]["date"] == today:
+                add_todays_date_to_the_charts = False
+        except Exception:
+            pass
+        
+        if add_todays_date_to_the_charts:
             history += f"Date: {today} | Subscribers: {subscriber_count} | Views: {view_count} | Videos: {video_count}"
             history_date.append(today)
             history_subscribers.append(subscriber_count)
