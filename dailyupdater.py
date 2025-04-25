@@ -43,8 +43,25 @@ def save_user_tracker(channel_id, channel_name, subscribers, views, videos):
 
     print(f"Data written! {channel_name} or {channel_id} | {today} {subscribers} {views} {videos}")
 
+def get_stats(statistic):
+    try:
+        return channel_statistics["items"][0]["statistics"][statistic]
+    except KeyError:
+        try:
+            print(f"ERROR - FAIL while asigning {statistic.replace("Count", "s")} | Writing the previous value. Reason: Keyerror | API Response: \n {channel_statistics} \n ")
+            return user_tracker[channel_id]["stats"][-1][statistic.replace("Count", "s")] # The .replace is there because of the difference between how the API and the UserTracker store stats
+        except Exception as ex:
+            print(f"ERROR - FAIL while assigning {statistic.replace("Count", "s")} | Writing a 0 \n {channel_statistics} . Reason: {ex}\n ")
+            return 0
+            
+
+
 if __name__ == "__main__":
+
+    list_of_people = []
+
     for username, channel_id in resolver.items():
+        list_of_people.append(channel_id)
         today = datetime.datetime.now().strftime("%Y-%m-%d")
         
         write = True
@@ -60,9 +77,9 @@ if __name__ == "__main__":
             response = getResponse(f"https://www.googleapis.com/youtube/v3/channels?part=statistics&id={channel_id}&key={API_KEY}")
             channel_statistics = response.json()
             try:
-                view_count = channel_statistics["items"][0]["statistics"]["viewCount"]
-                subscriber_count = channel_statistics["items"][0]["statistics"]["subscriberCount"]
-                video_count = channel_statistics["items"][0]["statistics"]["videoCount"]
+                view_count = get_stats("viewCount")
+                subscriber_count = get_stats("subscriberCount")
+                video_count = get_stats("videoCount")
             except KeyError:
                 print(f"ERROR - API response invalid. Response: {response} {channel_statistics}")
                 save_user = False
